@@ -1,6 +1,6 @@
 import database from '../config/mysql.config.js';
 import Respone from '../domain/response.js';
-import log from '../util/logger.js';
+import logger from '../util/logger.js';
 import QUERY from '../query/patient.query.js';
 
 const HttpStatus ={
@@ -17,7 +17,7 @@ export const getPatients = (req, res) =>{
     database.query(QUERY.SELECT_PATIENTS, (error,results) =>{
         if(!results){
             res.status(HttpStatus.OK.code)
-            .send(new Respone(HttpStatus.OK.code, HttpStatus.OK.status, `No Patiens found`));
+            .send(new Respone(HttpStatus.OK.code, HttpStatus.OK.status, `No Patients found`));
         }else{
             res.status(HttpStatus.OK.code)
             .send(new Respone(HttpStatus.OK.code, HttpStatus.OK.status,`Patients retrieved`, {patients: results}));
