@@ -26,15 +26,16 @@ export const getPatients = (req, res) => {
 };
 export const createPatient = (req, res) =>{
     logger.info(`${req.method} ${req.originalUrl}, creating patient`);
-    database.query(QUERY.CREATE_PATIENTS, Object.values(req.body), (error,results) =>{
+    database.query(QUERY.CREATE_PATIENTS_PROCEDURE, Object.values(req.body), (error,results) =>{
         if(!results){
             logger.error(error.message);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR.code)
             .send(new Response(HttpStatus.INTERNAL_SERVER_ERROR.code, HttpStatus.INTERNAL_SERVER_ERROR.status, `Error Occured`));
         }else{
-            const patient = { id: results.insertId, ...req.body, created_at: new Date() };
+            //const patient = { id: results.insertId, ...req.body, created_at: new Date() };
+            const patient = results[0][0];
             res.status(HttpStatus.OK.code)
-            .send(new Response(HttpStatus.OK.code, HttpStatus.OK.status,`Patients retrieved`, {patient}));
+            .send(new Response(HttpStatus.CREATED.code, HttpStatus.CREATED.status,`Patients retrieved`, {patient}));
         }
     })
 }
